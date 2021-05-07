@@ -24,5 +24,5 @@ app.get('/', (req, res) => {
 
     res.render('articles/index', {articles: articles})
 })
-
+//http://localhost:5000/ copy and paste this to go to the home page of the blog//
 app.listen(5000)

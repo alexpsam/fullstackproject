@@ -2,9 +2,9 @@ const express = require('express')
 
 const router = express.Router()
 
-router.get('/new', (req, res) => {
+router.get('/creat', (req, res) => {
 
-    res.render('articles/new')
+    res.render('/articles/creat')
 
 })
 // router.post('/', (req,res) => {
