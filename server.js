@@ -6,7 +6,7 @@ const app = express()
 
 app.set('view engine', 'ejs')
 
-app.use( '/article' , articleRouter)
+
 
 app.get('/', (req, res) => {
     const articles = [{
@@ -24,5 +24,6 @@ app.get('/', (req, res) => {
 
     res.render('articles/index', {articles: articles})
 })
+app.use( '/articles' , articleRouter)
 //http://localhost:5000/ copy and paste this to go to the home page of the blog//
 app.listen(5000)
