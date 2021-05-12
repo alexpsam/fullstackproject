@@ -1,8 +1,9 @@
 const express = require("express")
-
 const mustacheExpress = require('mustache-express')
 const pgp = require('pg-promise')()
 const CONNECTION_STRING = "postgres://localhost:5432/blogdata"
+
+const PORT = 3000
 
 
 const articleRouter = require("./routes/articles")
@@ -17,17 +18,10 @@ app.set('view engine','mustache')
 const db = pgp(CONNECTION_STRING)
 
 
-app.post('/articles/new',(req,res) => {
-
-    console.log(req.body);
-    let title = req.body.title
-    let description = req.body.description
-   
-  
-   db.none('INSERT INTO articles(title,body) VALUES($1,$2)',[title,description])
-    .then(() => {
-      res.send("SUCCESS")
-    })
+app.get('/articles/new', async (req,res) => {
+    
+    const articles = await db.query("select * from blogdata");
+    console.log(results);
   
   })
 
