@@ -1,54 +1,57 @@
-const express = require("express")
-
+const express = require('express')
+const app = express()
 const mustacheExpress = require('mustache-express')
+const bodyParser = require('body-parser')
 const pgp = require('pg-promise')()
+const path = require('path')
+
+const PORT = 3003
 const CONNECTION_STRING = "postgres://localhost:5432/blogdata"
 
 
-const articleRouter = require("./routes/articles")
+const VIEWS_PATH = path.join(__dirname,'/views')
 
-const app = express()
 
-app.engine('mustache',mustacheExpress())
-app.set('views','./views')
+app.engine('mustache',mustacheExpress(VIEWS_PATH + '/partials','.mustache'))
+app.set('views',VIEWS_PATH)
 app.set('view engine','mustache')
 
 
+app.use(bodyParser.urlencoded({extended: false}))
+
 const db = pgp(CONNECTION_STRING)
 
+app.get('/',(req,res)=> {
 
-app.post('/articles/new',(req,res) => {
+        db.any('SELECT articleid, title,body FROM articles')
+        .then((articles) => {
 
-    console.log(req.body);
-    let title = req.body.title
-    let description = req.body.description
-   
-  
-   db.none('INSERT INTO articles(title,body) VALUES($1,$2)',[title,description])
-    .then(() => {
-      res.send("SUCCESS")
-    })
-  
+            res.render('index',{articles: articles})
+
+        })
+
+})
+
+
+app.get('/add-article',(req,res) => {
+  res.render('add-article')
+})
+
+app.post('/add-article',(req,res) => {
+
+  let title = req.body.title
+  let description = req.body.description
+ 
+
+  db.none('INSERT INTO articles(title,body) VALUES($1,$2)',[title,description])
+  .then(() => {
+    res.redirect('/')
   })
 
-
-app.get('/', (req, res) => {
-    const articles = [{
-        title:'test article',
-        createdAt: new Date(),
-        description: 'Test description'
-    },
-    {
-        title:'test article 2',
-        createdAt:  new Date(),
-        description: 'Test description'
-    }
-    
-    ]
-
-    res.render('articles/index', {articles: articles})
-    
 })
-app.use( '/articles' , articleRouter)
-//http://localhost:5000/ copy and paste this to go to the home page of the blog//
-app.listen(5000)
+
+
+
+app.listen(PORT,() => {
+  console.log(`Server has started on ${PORT}`)
+})
