@@ -3,11 +3,13 @@ const app = express()
 const mustacheExpress = require('mustache-express')
 const bodyParser = require('body-parser')
 const { post } = require('got')
+const { Router } = require('express')
 const pgp = require('pg-promise')()
 
 
 const PORT = 3003
-const CONNECTION_STRING = "postgres://xxvxdizkyfahlb:892a18d7a946c9f4b8556f463889889b026549b67a0ee25e7744b98f974d3aab@ec2-34-202-54-225.compute-1.amazonaws.com:5432/d1q9s7p8194avv"
+const CONNECTION_STRING = "postgres://localhost:5432/blogdata"
+
 
 
 
@@ -21,11 +23,12 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 const db = pgp(CONNECTION_STRING)
 
-app.get('/ping', (req, res) => {
 
-    res.send ('pong');
+router.get('/hello',(req,res,next) => {
 
+        res.send('hello world !')
 })
+
 
 app.get('/',(req,res)=> {
 
