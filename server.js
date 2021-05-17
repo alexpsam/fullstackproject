@@ -7,7 +7,8 @@ const pgp = require('pg-promise')()
 
 
 const PORT = 3003
-const CONNECTION_STRING = "postgres://localhost:5432/blogdata"
+const CONNECTION_STRING = "postgres://xxvxdizkyfahlb:892a18d7a946c9f4b8556f463889889b026549b67a0ee25e7744b98f974d3aab@ec2-34-202-54-225.compute-1.amazonaws.com:5432/d1q9s7p8194avv
+"
 
 
 
