@@ -2,24 +2,27 @@ const express = require('express')
 const app = express()
 const mustacheExpress = require('mustache-express')
 const bodyParser = require('body-parser')
+const { post } = require('got')
 const pgp = require('pg-promise')()
-const path = require('path')
+
 
 const PORT = 3003
 const CONNECTION_STRING = "postgres://localhost:5432/blogdata"
 
 
-const VIEWS_PATH = path.join(__dirname,'/views')
 
 
-app.engine('mustache',mustacheExpress(VIEWS_PATH + '/partials','.mustache'))
-app.set('views',VIEWS_PATH)
+
+app.engine('mustache',mustacheExpress())
+app.set('views','./views')
 app.set('view engine','mustache')
 
 
 app.use(bodyParser.urlencoded({extended: false}))
 
 const db = pgp(CONNECTION_STRING)
+
+
 
 app.get('/',(req,res)=> {
 
@@ -28,7 +31,49 @@ app.get('/',(req,res)=> {
 
             res.render('index',{articles: articles})
 
+            
+
         })
+
+})
+
+app.post('/delete-article',(req,res) => {
+
+    let blogid = req.body.articleid
+
+db.none('DELETE FROM articles WHERE articleid = $1', [blogid])
+
+.then(() => {
+
+    res.redirect('/') 
+
+    })
+}) 
+
+app.post('/update-article',(req,res) => {
+        
+    let title = req.body.title
+    let description = req.body.description
+    let articleid = req.body.articleid
+    
+        db.none('UPDATE articles SET title = $1, body = $2 WHERE articleid = $3',[title,description,articleid] )
+    .then(() => {
+
+        res.redirect('/')
+    })
+})
+
+app.get('/edit/:articleid',(req,res) => {
+
+        let articleid = req.params.articleid
+
+    db.one('SELECT articleid,title,body FROM articles WHERE articleid = $1',[articleid])
+
+   .then((article) => {
+
+        res.render('edit-article',article)
+
+   }) 
 
 })
 
