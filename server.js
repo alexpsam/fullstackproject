@@ -24,11 +24,6 @@ app.use(bodyParser.urlencoded({extended: false}))
 const db = pgp(CONNECTION_STRING)
 
 
-router.get('/hello',(req,res,next) => {
-
-        res.send('hello world !')
-})
-
 
 app.get('/',(req,res)=> {
 
