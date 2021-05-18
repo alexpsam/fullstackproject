@@ -23,7 +23,11 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 const db = pgp(CONNECTION_STRING)
 
+app.get('/ping', (req, res) => {
 
+  res.send ('pong');
+
+})
 
 app.get('/',(req,res)=> {
 
