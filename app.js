@@ -7,7 +7,7 @@ const { Router } = require('express')
 const pgp = require('pg-promise')()
 
 
-const PORT = 3003
+const PORT = process.env.PORT || 8080
 const CONNECTION_STRING = "postgres://localhost:5432/blogdata"
 
 
