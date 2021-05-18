@@ -16,15 +16,32 @@
     
     <div class="list-group">
     {{#articles}}
-  <a href="#" class="list-group-item list-group-item-action">
+
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">{{title}}</h5>
 
     </div>
     <p class="mb-1">{{body}}</p>
-  </a>
+
+    <div>
+
+            <a href="/edit/{{articleid}}">
+                <button type="submit" class="btn-success" >Edit</button>
+            </a> 
+
+        <form action="/delete-article" method="POST" style=" display: inline-block">
+            <input type="hidden" name="articleid" value="{{articleid}}"/>
+            <button class="btn-danger" > Delete </button>
+        
+        </form>
+    </div> 
+
+          <br>
+
     {{/articles}}
   </div>
+
+<br>
 
 </div>
 </body>
